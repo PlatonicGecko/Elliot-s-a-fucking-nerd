@@ -10,7 +10,7 @@ const int HEADERSIZE;
 using namespace std;
 
 class pktdef {
-	int count = 0;
+	int localcount = 0;
 	char* RawBuffer;
 	enum  cmdType
 	{
@@ -53,7 +53,7 @@ class pktdef {
 		CRC crc;
 	};
 
-
+	cmdPacket packet; // Packet structure to hold the header, body, and CRC
 	Header header;
 	drivebody body;
 	CRC crc;
@@ -69,7 +69,7 @@ class pktdef {
 			{
 				header.drive = 0;
 				header.sleep = 1;
-				header.ack = 0;
+				header.status = 0;
 
 			}
 		}
@@ -77,13 +77,13 @@ class pktdef {
 		else if (type == 0) {
 			header.drive = 1;
 			header.sleep = 0;
-			header.ack = 0;
+			header.status = 0;
 		}
 		//setting to wait 
 		else if (type == 2){
 			header.drive = 0;
 			header.sleep = 0;
-			header.ack = 1;
+			header.status = 1;
 		}
 		
 		else
@@ -120,7 +120,7 @@ class pktdef {
 			else if (header.sleep == 1) {
 				return SLEEP;
 			}
-			else if (header.ack == 1) {
+			else if (header.status == 1) {
 				return RESPONSE;
 			}
 			else {
@@ -128,23 +128,46 @@ class pktdef {
 			}
 	}
 
-	bool GetAck() {}
+	bool GetAck() {
+		if (header.ack == 1) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
-	int GetLength() {}
+	int GetLength() {
+		// Return the length of the packet
+		return sizeof(packet);
+	}
 	
 
-	void SetPktCount(int) {}
+	void SetPktCount(int) {
+		// Set the packet count
+		header.pktcount = localcount;
+		localcount++;
+	}
 
 
-	char* GetBodyData() {}
+	char* GetBodyData() {
+		// Return the body data as a string
+		char* buffer = new char[100]; // Allocate memory for the buffer
+		sprintf(buffer, "%d,%hhu,%d", body.direction, body.duration, body.speed);
+		return buffer;
+	}
 
-	int GetPktCount() {}
+	int GetPktCount() {
+		return header.pktcount;
+	}
 
 	bool CheckCRC(char*, int) {}
 
 	void CalcCRC() {}
 
-	char* GenPacket() {}
+	char* GenPacket() {
+		
+	}
 };
 
 int main() {
