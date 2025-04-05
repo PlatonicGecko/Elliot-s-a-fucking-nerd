@@ -1,2 +1,2 @@
 ﻿  drive.cpp
-C:\Users\Chris\source\repos\elliot-s-an-amazing-teacher-\Milestone1\drive.cpp(156,3): error C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  Milestone1.vcxproj -> C:\Users\Chris\Source\Repos\elliot-s-an-amazing-teacher-\Milestone1\x64\Debug\Milestone1.exe
